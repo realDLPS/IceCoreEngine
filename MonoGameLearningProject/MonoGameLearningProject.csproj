@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGameVectorMath">
-      <HintPath>..\MonoGameVectorMath\bin\Release\net6.0\MonoGameVectorMath.dll</HintPath>
+      <HintPath>..\..\MonoGameVectorMath\bin\Release\net6.0\MonoGameVectorMath.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">

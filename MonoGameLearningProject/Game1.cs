@@ -16,12 +16,20 @@ namespace MonoGameLearningProject
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+
         public Utility Utility;
         /// <summary>
         /// Collision system
         /// </summary>
         public CollisionSystem CS;
-        private SpriteBatch _spriteBatch;
+
+        /// <summary>
+        /// Graphics
+        /// </summary>
+        public Graphics GM;
+
+        public float DeltaTime = 0.0f;
 
         // Debug
         QuadTreeNode CurrentNode;
@@ -31,11 +39,15 @@ namespace MonoGameLearningProject
         public Texture2D cross;
 
         public KeyboardState KBState;
+        public MouseState MouseState;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            Utility = new Utility(_graphics);
+            _graphics.IsFullScreen = true;
+            _graphics.HardwareModeSwitch = false;
+
+            Window.AllowUserResizing = true;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -43,15 +55,18 @@ namespace MonoGameLearningProject
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            Utility = new Utility(_graphics);
 
             CS = new CollisionSystem();
             CS.CreateQuadTree(512);
 
-            CurrentNode = CS.QuadTreeRoot;
             
 
+
+            CurrentNode = CS.QuadTreeRoot;
+            
             KBState = Keyboard.GetState();
+            MouseState = Mouse.GetState();
 
             base.Initialize();
         }
@@ -59,6 +74,8 @@ namespace MonoGameLearningProject
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            GM = new Graphics(_graphics, _spriteBatch, GraphicsDevice);
 
             cross = Content.Load<Texture2D>("cross");
             ball = Content.Load<Texture2D>("ball");
@@ -68,8 +85,21 @@ namespace MonoGameLearningProject
 
         protected override void Update(GameTime gameTime)
         {
+            DeltaTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if(Keyboard.GetState().IsKeyDown(Keys.F11) && !KBState.IsKeyDown(Keys.F11))
+            {
+                _graphics.IsFullScreen = !_graphics.IsFullScreen;
+                if(!_graphics.IsFullScreen)
+                {
+                    //_graphics.PreferredBackBufferWidth = 640;
+                    //_graphics.PreferredBackBufferHeight = 480;
+                }
+                _graphics.ApplyChanges();
+            }
 
             if(Keyboard.GetState().IsKeyDown(Keys.F) && !KBState.IsKeyDown(Keys.F))
             {
@@ -110,10 +140,14 @@ namespace MonoGameLearningProject
                 }
             }
 
-            // TODO: Add your update logic here
-            //Debug.WriteLine(CurrentNode.HasSplit);
+            GM.CameraPosition = GM.CameraPosition + new Vector2(((KeyDown(Keys.D) ? 1 : 0) + (KeyDown(Keys.A) ? -1 : 0)), ((KeyDown(Keys.W) ? 1 : 0) + (KeyDown(Keys.S) ? -1 : 0))) * 125f * DeltaTime;
+
+            GM.UpdateZoom(GM.CameraZoom + (Mouse.GetState().ScrollWheelValue - MouseState.ScrollWheelValue) * DeltaTime * 0.03f);
+
+            //Debug.WriteLine(GM.CameraPosition);
 
             KBState = Keyboard.GetState();
+            MouseState = Mouse.GetState();
             base.Update(gameTime);
         }
 
@@ -124,11 +158,29 @@ namespace MonoGameLearningProject
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            CS.QuadTreeRoot.DebugDraw(_spriteBatch, cross);
-            CurrentNode.DebugDrawSingle(_spriteBatch, ball, 1.0f);
+            //CS.QuadTreeRoot.DebugDraw(_spriteBatch, cross);
+            //CurrentNode.DebugDrawSingle(_spriteBatch, ball, 1.0f);
+
+            Debug.WriteLine(GM.GetViewportSize() / 2);
+
+            GM.DrawSpriteCentered(GM.GetViewportSize()/2, ball, 1f);
+            GM.DrawWorldSpriteCentered(new Vector2(100, 250), cross, .5f);
+            GM.DrawWorldSpriteCentered(new Vector2(500, 350), cross, .5f);
+            GM.DrawWorldSpriteCentered(new Vector2(-200, -100), cross, .5f);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Convinience function
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool KeyDown(Keys key)
+        {
+            return Keyboard.GetState().IsKeyDown(key);
         }
     }
 

@@ -133,7 +133,7 @@ namespace MonoGameLearningProject
             {
                 return false;
             }
-            return CollisionSystem.AABB(new Square(Position, Size), new Square(other.Position, other.Size));
+            return CollisionSystem.AABB(new Square(Position, new Vector2(Size)), new Square(other.Position, new Vector2(other.Size)));
         }
         
         //// Debug functions

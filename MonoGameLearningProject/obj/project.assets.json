@@ -108,11 +108,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\OtherProjects\\MonoGameLearningProject\\MonoGameLearningProject.csproj",
+      "projectUniqueName": "C:\\OtherProjects\\IceCoreEngine\\MonoGameLearningProject\\MonoGameLearningProject.csproj",
       "projectName": "MonoGameLearningProject",
-      "projectPath": "C:\\OtherProjects\\MonoGameLearningProject\\MonoGameLearningProject.csproj",
+      "projectPath": "C:\\OtherProjects\\IceCoreEngine\\MonoGameLearningProject\\MonoGameLearningProject.csproj",
       "packagesPath": "C:\\Users\\DLPS\\.nuget\\packages\\",
-      "outputPath": "C:\\OtherProjects\\MonoGameLearningProject\\obj\\",
+      "outputPath": "C:\\OtherProjects\\IceCoreEngine\\MonoGameLearningProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

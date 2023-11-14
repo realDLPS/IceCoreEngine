@@ -41,11 +41,11 @@ namespace MonoGameLearningProject
             }
 
             // Checks is the box to the left too far away from the box on the right on the X-axis
-            if (IsARight && a.Position.X - a.Size / 2 > b.Position.X + b.Size / 2)
+            if (IsARight && a.Position.X - a.Size.X / 2 > b.Position.X + b.Size.X / 2)
             {
                 return false;
             }
-            else if (b.Position.X - b.Size / 2 > a.Position.X + a.Size / 2)
+            else if (b.Position.X - b.Size.X / 2 > a.Position.X + a.Size.X / 2)
             {
                 return false;
             }
@@ -57,11 +57,11 @@ namespace MonoGameLearningProject
             }
 
             // Checks if the lower box is too low from the box that is higher on the Y-axis
-            if (IsAHigh && a.Position.Y - a.Size / 2 > b.Position.Y + b.Size / 2)
+            if (IsAHigh && a.Position.Y - a.Size.Y / 2 > b.Position.Y + b.Size.Y / 2)
             {
                 return false;
             }
-            else if (b.Position.Y - b.Size / 2 > a.Position.Y + a.Size / 2)
+            else if (b.Position.Y - b.Size.Y / 2 > a.Position.Y + a.Size.Y / 2)
             {
                 return false;
             }

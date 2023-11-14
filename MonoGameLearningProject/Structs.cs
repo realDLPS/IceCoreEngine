@@ -16,9 +16,9 @@ namespace MonoGameLearningProject
     public struct Square
     {
         public Vector2 Position;
-        public float Size;
+        public Vector2 Size;
 
-        public Square(Vector2 position, float size)
+        public Square(Vector2 position, Vector2 size)
         {
             Position = position;
             Size = size;

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kID3RZ6NQp2cqnIiqxkwLH431xqNx/2+YiH3+RspzBAWuFtWyi+BEmrUVfIPyiprSS8Xqk3RU+mqrrFe4bMflw==",
+  "dgSpecHash": "STMJEtsjcgiZl+7Es1srNpOAaUXcLRCf3L2ZI3lM7wKwk1FwmtzuTRBnlTH6lNHKsrf3sGIrDlDBcfb13fUS0w==",
   "success": true,
-  "projectFilePath": "C:\\OtherProjects\\MonoGameLearningProject\\MonoGameLearningProject.csproj",
+  "projectFilePath": "C:\\OtherProjects\\IceCoreEngine\\MonoGameLearningProject\\MonoGameLearningProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DLPS\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
     "C:\\Users\\DLPS\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512"

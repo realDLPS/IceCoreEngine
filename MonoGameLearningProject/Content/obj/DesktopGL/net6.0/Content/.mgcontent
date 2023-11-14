@@ -4,8 +4,8 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/OtherProjects/MonoGameLearningProject/Content/ball.png</File>
-    <File>C:/OtherProjects/MonoGameLearningProject/Content/cross.png</File>
+    <File>C:/OtherProjects/IceCoreEngine/MonoGameLearningProject/Content/ball.png</File>
+    <File>C:/OtherProjects/IceCoreEngine/MonoGameLearningProject/Content/cross.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
