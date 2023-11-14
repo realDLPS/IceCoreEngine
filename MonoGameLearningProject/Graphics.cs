@@ -114,10 +114,13 @@ namespace MonoGameLearningProject
         public void DrawSpriteCentered(Vector2 viewportPosition, Texture2D texture, float scale)
         {
             Vector2 SpriteSize = new Vector2(texture.Width, texture.Height);
+            Vector2 ViewportSize = GetViewportSize();
+            float ScreenSizeScaling = ((ViewportSize.X / 1920 >= ViewportSize.Y / 1080) ? ViewportSize.X / 1920 : ViewportSize.Y / 1080);
+
 
             if (IsSquareInView(new Square(viewportPosition, SpriteSize)))
             {
-                SpriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, SpriteSize / 2, CameraZoom * scale, SpriteEffects.None, 0f);
+                SpriteBatch.Draw(texture, viewportPosition, null, Color.White, 0f, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, SpriteEffects.None, 0f);
             }
         }
 
