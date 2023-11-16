@@ -140,6 +140,7 @@ namespace MonoGameLearningProject
                     CurrentNode = CurrentNode.Parent.Children[((CurrentNode.ChildIndex+1>3) ? 0 : CurrentNode.ChildIndex + 1)];
                 }
             }
+            
 
             GM.CameraPosition = GM.CameraPosition + new Vector2(((KeyDown(Keys.D) ? 1 : 0) + (KeyDown(Keys.A) ? -1 : 0)), ((KeyDown(Keys.W) ? 1 : 0) + (KeyDown(Keys.S) ? -1 : 0))) * 125f * DeltaTime;
 

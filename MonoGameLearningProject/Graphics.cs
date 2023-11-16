@@ -40,6 +40,7 @@ namespace MonoGameLearningProject
 
         //// Functions
         
+
         /// <summary>
         /// Converts a world position to view space
         /// You may use IsSquareInView to check is this position on screen
