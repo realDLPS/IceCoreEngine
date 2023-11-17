@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-//using MonoGameVectorMath;
 using System;
 using System.Diagnostics;
 using System.Linq;

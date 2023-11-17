@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-//using MonoGameVectorMath;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -18,6 +17,7 @@ namespace MonoGameLearningProject
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        public InputManager IM;
         public Utility Utility;
         /// <summary>
         /// Collision system
@@ -58,8 +58,11 @@ namespace MonoGameLearningProject
             CS = new CollisionSystem();
             CS.CreateQuadTree(512);
 
-            
 
+            IM = new InputManager();
+            IM.AddInputAction(new InputAction(EInputType.Analog, MoveUp));
+            IM.QuickAddTriggerToAction(EInput.W, 1f);
+            IM.QuickAddTriggerToAction(EInput.S, -1f);
 
             CurrentNode = CS.QuadTreeRoot;
             
@@ -140,9 +143,10 @@ namespace MonoGameLearningProject
                     CurrentNode = CurrentNode.Parent.Children[((CurrentNode.ChildIndex+1>3) ? 0 : CurrentNode.ChildIndex + 1)];
                 }
             }
-            
 
-            GM.CameraPosition = GM.CameraPosition + new Vector2(((KeyDown(Keys.D) ? 1 : 0) + (KeyDown(Keys.A) ? -1 : 0)), ((KeyDown(Keys.W) ? 1 : 0) + (KeyDown(Keys.S) ? -1 : 0))) * 125f * DeltaTime;
+            IM.UpdateInputs();
+
+            GM.CameraPosition = GM.CameraPosition + new Vector2(((KeyDown(Keys.D) ? 1 : 0) + (KeyDown(Keys.A) ? -1 : 0)), 0/*, ((KeyDown(Keys.W) ? 1 : 0) + (KeyDown(Keys.S) ? -1 : 0))*/) * 125f * DeltaTime;
 
             GM.UpdateZoom(GM.CameraZoom + (Mouse.GetState().ScrollWheelValue - MouseState.ScrollWheelValue) * DeltaTime * 0.03f);
 
@@ -151,6 +155,11 @@ namespace MonoGameLearningProject
             base.Update(gameTime);
         }
 
+        protected void MoveUp(float value)
+        {
+            Debug.WriteLine("Test");
+            GM.CameraPosition = GM.CameraPosition + new Vector2(0, value) * 125f * DeltaTime;
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
