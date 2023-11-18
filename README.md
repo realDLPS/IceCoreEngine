@@ -24,4 +24,4 @@ A simplistic 2D game engine I am creating for my own needs.
 I plan to use the extension ".ictxt" for file loading. It can be pronounced as "Icy text" or "IceCore text".
 It is just a plain text extension to help with players feeling the need to mess with ".txt" files. No real protection is offered though.
 
-And yes, I chose this format because it happened to sound cool.
+And yes, I chose this extension because it happened to sound cool.
