@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Security.AccessControl;
+using static System.Collections.Specialized.BitVector32;
 
 namespace MonoGameLearningProject
 {
@@ -26,6 +27,7 @@ namespace MonoGameLearningProject
 
 
         private List<float> InputStates = new List<float>();
+        private List<float> PreviousInputStates = new List<float>(); // Not implemented yet
 
         public InputManager()
         {
@@ -35,6 +37,7 @@ namespace MonoGameLearningProject
             foreach (EInput input in Enum.GetValues(typeof(EInput)))
             {
                 InputStates.Add(0);
+                PreviousInputStates.Add(0);
             }
         }
 
@@ -43,18 +46,12 @@ namespace MonoGameLearningProject
         {
             CurrentMouseState = Mouse.GetState();
             CurrentKeyboardState = Keyboard.GetState();
+            
 
             // Update the InputStates list
             foreach (EInput input in Enum.GetValues(typeof(EInput)))
             {
-                if((int)input < 160)
-                {
-                    InputStates[(int)input] = ConvertInputToKeyboard(input);
-                }
-                else
-                {
-                    InputStates[(int)input] = ConvertInputToMouse(input);
-                }
+                InputStates[(int)input] = ConvertInput(input);
             }
             
             if(InputActions != null && InputActions.Count() > 0)
@@ -63,20 +60,31 @@ namespace MonoGameLearningProject
                 {
                     if(action.IsActive())
                     {
-                        float Sum = 0;
-
-                        foreach (var trigger in action.GetInputTriggers())
-                        {
-                            Sum += InputStates[(int)trigger.GetButton()] * trigger.GetMultiplier();
-                        }
-
                         if (action.GetInputType() == EInputType.Analog)
                         {
-                            action.GetInputUpdateDelegate().Invoke(Sum);
+                            float Sum = 0;
+
+                            // Sum up all the inputs
+                            foreach (var trigger in action.GetInputTriggers())
+                            {
+                                Sum += InputStates[(int)trigger.GetButton()] * trigger.GetMultiplier();
+                            }
+                            if(action.GetInputUpdateDelegate() != null)
+                            {
+                                action.GetInputUpdateDelegate().Invoke(Sum);
+                            }
                         }
                         else if (action.GetInputType() == EInputType.Digital)
                         {
-                            action.GetInputUpdateDelegate().Invoke(Sum > 0 ? 1 : 0);
+                            foreach (var trigger in action.GetInputTriggers())
+                            {
+                                if (InputStates[(int)trigger.GetButton()] != PreviousInputStates[(int)trigger.GetButton()])
+                                {
+                                    // Stop if even one input has changed
+                                    action.GetInputUpdateDelegate().Invoke(InputStates[(int)trigger.GetButton()]);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -85,6 +93,9 @@ namespace MonoGameLearningProject
             // Finishing
             PreviousMouseState = CurrentMouseState;
             PreviousKeyboardState = CurrentKeyboardState;
+            PreviousInputStates.Clear();
+            PreviousInputStates.AddRange(InputStates);
+
         }
         #endregion
 
@@ -95,7 +106,7 @@ namespace MonoGameLearningProject
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private float ConvertInputToMouse(EInput input)
+        private float ConvertInputMouse(EInput input)
         {
             if(input == EInput.MouseLeft)
             {
@@ -138,7 +149,7 @@ namespace MonoGameLearningProject
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private float ConvertInputToKeyboard(EInput input)
+        private float ConvertInputKeyboard(EInput input)
         {
             if(Enum.TryParse(input.ToString(), true, out Keys keyboard))
             {
@@ -146,8 +157,26 @@ namespace MonoGameLearningProject
             }
             return 0;
         }
+
+        /// <summary>
+        /// Converts an input to it's float value
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private float ConvertInput(EInput input)
+        {
+            if ((int)input < 160)
+            {
+                return ConvertInputKeyboard(input);
+            }
+            else
+            { 
+                return ConvertInputMouse(input); 
+            }
+        }
         #endregion
 
+        #region Input action managing
         /// <summary>
         /// Adds an input action that will be called.
         /// 
@@ -183,7 +212,6 @@ namespace MonoGameLearningProject
         /// <param name="index"></param>
         public void AddTriggerToAction(EInput button, float multiplier, int index)
         {
-            Debug.WriteLine("test2");
             InputActions[index].AddTrigger(new InputTrigger(button, multiplier));
         }
         /// <summary>
@@ -195,5 +223,46 @@ namespace MonoGameLearningProject
         {
             AddTriggerToAction(button, multiplier, InputActions.Count - 1);
         }
+        #endregion
+
+        #region Convinience functions
+        /// <summary>
+        /// Checks is button pressed
+        /// 
+        /// Weird behavior may arise with scroll wheel
+        /// </summary>
+        /// <param name="button"></param>
+        /// <returns>Returns true if button is pressed</returns>
+        public bool IsButtonPressed(EInput button)
+        {
+            return ConvertInput(button) == 1;
+        }
+
+        /// <summary>
+        /// Gets the value of an action
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public float GetActionValue(int index)
+        {
+            InputAction action = InputActions[index];
+
+            if (action.IsActive())
+            {
+                float Sum = 0;
+
+                // Sum up all the inputs
+                foreach (var trigger in action.GetInputTriggers())
+                {
+                    Sum += InputStates[(int)trigger.GetButton()] * trigger.GetMultiplier();
+                }
+                return Sum;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        #endregion
     }
 }

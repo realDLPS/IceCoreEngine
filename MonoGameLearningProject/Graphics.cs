@@ -12,7 +12,7 @@ using System.Reflection.Metadata;
 
 namespace MonoGameLearningProject
 {
-    public class Graphics
+    public class GraphicsManager
     {
         //// Camera variables
         /// <summary>
@@ -25,15 +25,17 @@ namespace MonoGameLearningProject
         private GraphicsDeviceManager GDM;
         private SpriteBatch SpriteBatch;
         private GraphicsDevice GraphicsDevice;
+        private GameWindow Window;
 
 
         //// Constructor
 
-        public Graphics(GraphicsDeviceManager _graphics, SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
+        public GraphicsManager(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameWindow window)
         {
-            GDM = _graphics;
+            GDM = graphics;
             SpriteBatch = spriteBatch;
-            GraphicsDevice = graphicsDevice;
+            GraphicsDevice = spriteBatch.GraphicsDevice;
+            Window = window;
         }
 
 
@@ -182,6 +184,32 @@ namespace MonoGameLearningProject
         public bool IsBorderlessWindow()
         {
             return !GDM.HardwareModeSwitch;
+        }
+
+        /// <summary>
+        /// Toggles can window be resized by user
+        /// </summary>
+        public void ToggleAllowResize()
+        {
+            Window.AllowUserResizing = !Window.AllowUserResizing;
+        }
+
+        /// <summary>
+        /// Sets can window be resized by user
+        /// </summary>
+        /// <param name="allowResize"></param>
+        public void SetAllowResize(bool allowResize)
+        {
+            Window.AllowUserResizing = allowResize;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Returns is window resizing allowed</returns>
+        public bool IsResizingAllowed()
+        {
+            return Window.AllowUserResizing;
         }
 
         /// <summary>

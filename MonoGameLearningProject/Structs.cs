@@ -26,21 +26,29 @@ namespace MonoGameLearningProject
     public struct InputAction
     {
         /// <summary>
-        /// If InputType is digital, delegate will return either 0 or 1. Triggers are first summed up and then clamped to a range of 0 to 1,
-        /// then if the value is higher that 0 a value of 1 will be returned.
+        /// If InputType is digital, delegate will trigger when value changes, will return either 0 or 1.
         /// 
         /// If InputType is analog, delegate will return the sum of all triggers, this may be greater that 1 or less that -1
         /// </summary>
         private EInputType InputType;
+
         /// <summary>
         /// A list of triggers for this input action
         /// 
         /// Each Trigger has a button (keyboard or mouse) and multiplier
         /// </summary>
         private List<InputTrigger> InputTriggers;
+
+        /// <summary>
+        /// Delegate that is invoked by this action
+        /// </summary>
         private InputDelegate InputUpdateDelegate;
 
+        /// <summary>
+        /// Is this action active?
+        /// </summary>
         private bool Active;
+
 
         /// <summary>
         /// 
@@ -53,6 +61,13 @@ namespace MonoGameLearningProject
             InputType = inputType;
             InputTriggers = new List<InputTrigger>();
             InputUpdateDelegate = inputUpdateDelegate;
+            Active = true;
+        }
+        public InputAction(EInputType inputType)
+        {
+            InputType = inputType;
+            InputTriggers = new List<InputTrigger>();
+            InputUpdateDelegate = null;
             Active = true;
         }
         public EInputType GetInputType()
