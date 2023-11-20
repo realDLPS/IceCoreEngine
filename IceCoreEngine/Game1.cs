@@ -29,7 +29,6 @@ namespace IceCoreEngine
             base.Initialize(); // It is recommended that you do not do anything before this
 
 
-            _graphicsManager.SetAllowResize(true);
             _graphicsManager.SetBorderlessWindow(true);
             _graphicsManager.SetFullScreen(true);
             _graphicsManager.ApplySettings();
@@ -89,17 +88,8 @@ namespace IceCoreEngine
         }
 
         #region Input callbacks
-        protected void MoveUp(float value)
-        {
-            _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + new Vector2(0, value) * 125f * _deltaTime;
-        }
-        protected void MoveRight(float value)
-        {
-            _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + new Vector2(value, 0) * 125f * _deltaTime;
-        }
         protected void ExitGame(float value)
         {
-            
             Exit();
         }
         #endregion
