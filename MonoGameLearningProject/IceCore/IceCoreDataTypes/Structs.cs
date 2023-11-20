@@ -49,6 +49,12 @@ namespace MonoGameLearningProject
         /// </summary>
         private bool Active;
 
+        /// <summary>
+        /// For analog this is the combined value
+        /// 
+        /// For digital this is either 0 or 1
+        /// </summary>
+        private float Value;
 
         /// <summary>
         /// 
@@ -62,6 +68,7 @@ namespace MonoGameLearningProject
             InputTriggers = new List<InputTrigger>();
             InputUpdateDelegate = inputUpdateDelegate;
             Active = true;
+            Value = 0;
         }
         public InputAction(EInputType inputType)
         {
@@ -69,6 +76,7 @@ namespace MonoGameLearningProject
             InputTriggers = new List<InputTrigger>();
             InputUpdateDelegate = null;
             Active = true;
+            Value = 0;
         }
         public EInputType GetInputType()
         {
@@ -98,6 +106,14 @@ namespace MonoGameLearningProject
         public void AddTrigger(InputTrigger trigger)
         {
             InputTriggers.Add(trigger);
+        }
+        public void SetValue(float value)
+        {
+            Value = value;
+        }
+        public float GetValue()
+        {
+            return Value;
         }
     }
     public struct InputTrigger

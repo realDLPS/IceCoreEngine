@@ -56,35 +56,46 @@ namespace MonoGameLearningProject
             
             if(InputActions != null && InputActions.Count() > 0)
             {
-                foreach (InputAction action in InputActions)
+                for(int index = 0; index < InputActions.Count(); index++)
                 {
-                    if(action.IsActive())
+                    if (InputActions[index].IsActive())
                     {
-                        if (action.GetInputType() == EInputType.Analog)
+                        if (InputActions[index].GetInputType() == EInputType.Analog)
                         {
                             float Sum = 0;
 
                             // Sum up all the inputs
-                            foreach (var trigger in action.GetInputTriggers())
+                            foreach (var trigger in InputActions[index].GetInputTriggers())
                             {
                                 Sum += InputStates[(int)trigger.GetButton()] * trigger.GetMultiplier();
                             }
-                            if(action.GetInputUpdateDelegate() != null)
+                            if(InputActions[index].GetInputUpdateDelegate() != null)
                             {
-                                action.GetInputUpdateDelegate().Invoke(Sum);
+                                InputActions[index].GetInputUpdateDelegate().Invoke(Sum);
                             }
+                            InputAction ModifiedAction = InputActions[index];
+                            ModifiedAction.SetValue(Sum);
+                            InputActions[index] = ModifiedAction;
                         }
-                        else if (action.GetInputType() == EInputType.Digital)
+                        else if (InputActions[index].GetInputType() == EInputType.Digital)
                         {
-                            foreach (var trigger in action.GetInputTriggers())
+                            bool FoundPress = false;
+                            foreach (var trigger in InputActions[index].GetInputTriggers())
                             {
-                                if (InputStates[(int)trigger.GetButton()] != PreviousInputStates[(int)trigger.GetButton()])
+                                if (InputStates[(int)trigger.GetButton()] == 1)
                                 {
-                                    // Stop if even one input has changed
-                                    action.GetInputUpdateDelegate().Invoke(InputStates[(int)trigger.GetButton()]);
+                                    FoundPress = true;
+                                    // Stop if even one input is pressed
                                     break;
                                 }
                             }
+                            if((FoundPress ? 1 : 0) != InputActions[index].GetValue())
+                            {
+                                InputActions[index].GetInputUpdateDelegate().Invoke(FoundPress ? 1 : 0);
+                            }
+                            InputAction ModifiedAction = InputActions[index];
+                            ModifiedAction.SetValue(FoundPress ? 1 : 0);
+                            InputActions[index] = ModifiedAction;
                         }
                     }
                 }
@@ -245,23 +256,7 @@ namespace MonoGameLearningProject
         /// <returns></returns>
         public float GetActionValue(int index)
         {
-            InputAction action = InputActions[index];
-
-            if (action.IsActive())
-            {
-                float Sum = 0;
-
-                // Sum up all the inputs
-                foreach (var trigger in action.GetInputTriggers())
-                {
-                    Sum += InputStates[(int)trigger.GetButton()] * trigger.GetMultiplier();
-                }
-                return Sum;
-            }
-            else
-            {
-                return 0;
-            }
+            return InputActions[index].GetValue();
         }
         #endregion
     }
