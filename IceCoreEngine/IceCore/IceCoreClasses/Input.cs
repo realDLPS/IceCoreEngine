@@ -12,7 +12,7 @@ using System.Reflection.Metadata;
 using System.Security.AccessControl;
 using static System.Collections.Specialized.BitVector32;
 
-namespace MonoGameLearningProject
+namespace IceCoreEngine
 {
     public class InputManager
     {

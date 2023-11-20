@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
-namespace MonoGameLearningProject
+namespace IceCoreEngine
 {
     /// <summary>
     /// Creates all subsystems such as input and graphics for you

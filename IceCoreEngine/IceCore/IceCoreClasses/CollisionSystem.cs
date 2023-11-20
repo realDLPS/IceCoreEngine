@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
-namespace MonoGameLearningProject
+namespace IceCoreEngine
 {
     /// <summary>
     /// Handles collision using a quadtree and AABB collision detection.

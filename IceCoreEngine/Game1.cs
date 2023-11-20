@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
-namespace MonoGameLearningProject
+namespace IceCoreEngine
 {
     public class Game1 : IceCoreGame
     {
@@ -26,9 +26,9 @@ namespace MonoGameLearningProject
 
         protected override void Initialize()
         {
-            base.Initialize();
-            // It is recommended that you do not do anything before this
-            
+            base.Initialize(); // It is recommended that you do not do anything before this
+
+
             _graphicsManager.SetAllowResize(true);
             _graphicsManager.SetBorderlessWindow(true);
             _graphicsManager.SetFullScreen(true);
@@ -48,7 +48,7 @@ namespace MonoGameLearningProject
 
         protected override void LoadContent()
         {
-            base.LoadContent();
+            base.LoadContent(); // It is recommended that you do not do anything before this
 
             cross = Content.Load<Texture2D>("cross");
             ball = Content.Load<Texture2D>("ball");
@@ -57,7 +57,8 @@ namespace MonoGameLearningProject
 
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+            base.Update(gameTime); // It is recommended that you do not do anything before this
+
             Move();
         }
 
