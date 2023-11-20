@@ -1,9 +1,9 @@
 ## This read me is not ready yet.
 
 # IceCore Engine
-A simplistic 2D game engine I am creating for my own needs.
+A simplistic 2D game engine I am creating for my own needs and as a learning exercise.
 
-### Goals
+### Personal goals
 - Learn engine programming
 - Create and publish a game using this engine on Steam
 - Clear documentation
@@ -23,7 +23,7 @@ A simplistic 2D game engine I am creating for my own needs.
 - An editor
 - 3D
 
-### Format
+### File extension
 I plan to use the extension ".ictxt" for file loading. It can be pronounced as "Icy text" or "IceCore text".
 It is just a plain text extension to help with players feeling the need to mess with ".txt" files. No real protection is offered though.
 
