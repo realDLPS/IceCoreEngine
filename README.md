@@ -15,6 +15,7 @@ A simplistic 2D game engine I am creating for my own needs.
 - Unreal inspired actors that have a location in the scene
 - Input
 - Sounds
+- UI
 - File IO?
 - P2P networking?
 
