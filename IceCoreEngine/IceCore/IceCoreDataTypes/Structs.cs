@@ -23,6 +23,55 @@ namespace IceCoreEngine
             Size = size;
         }
     }
+    public struct Transform
+    {
+        public Vector2 Position;
+        public float Rotation;
+        public Vector2 Size;
+        
+        public Transform(Vector2 postion, float rotation, Vector2 size)
+        {
+            Position = postion;
+            Rotation = rotation;
+            Size = size;
+        }
+        public Transform(Vector2 postion, float rotation)
+        {
+            Position = postion;
+            Rotation = rotation;
+            Size = new Vector2(1.0f);
+        }
+        public Transform(Vector2 postion, Vector2 size)
+        {
+            Position = postion;
+            Rotation = 0.0f;
+            Size = size;
+        }
+        public Transform(float rotation, Vector2 size)
+        {
+            Position = new Vector2(0.0f);
+            Rotation = rotation;
+            Size = size;
+        }
+        public Transform(Vector2 postion)
+        {
+            Position = postion;
+            Rotation = 0.0f;
+            Size = new Vector2(1.0f);
+        }
+        public Transform(float rotation)
+        {
+            Position = new Vector2(0.0f);
+            Rotation = rotation;
+            Size = new Vector2(1.0f);
+        }
+        public Transform()
+        {
+            Position = new Vector2(0.0f);
+            Rotation = 0.0f;
+            Size = new Vector2(1.0f);
+        }
+    }
     public struct InputAction
     {
         /// <summary>
