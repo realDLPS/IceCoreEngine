@@ -22,6 +22,10 @@ namespace IceCoreEngine
             _objects = new Dictionary<Guid, IceCoreObject>();
         }
 
+        /// <summary>
+        /// Runs update on all objects that can update
+        /// </summary>
+        /// <param name="deltaTime"></param>
         public void UpdateObjects(float deltaTime)
         {
             foreach (IceCoreObject icobject in _objects.Values.ToList())
@@ -34,7 +38,12 @@ namespace IceCoreEngine
                 }
             }
         }
-
+        /// <summary>
+        /// Spawns object of type T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="canUpdate"></param>
+        /// <returns></returns>
         public T SpawnObject<T>(bool canUpdate) where T : IceCoreObject, new()
         {
             T NewIceCoreObject = new T();
@@ -46,6 +55,13 @@ namespace IceCoreEngine
 
             return NewIceCoreObject;
         }
+
+        /// <summary>
+        /// Removes object from the object list
+        /// 
+        /// This should be called by the object itself
+        /// </summary>
+        /// <param name="guid"></param>
         public void RemoveObject(Guid guid)
         {
             _objects.Remove(guid);
@@ -84,7 +100,7 @@ namespace IceCoreEngine
         /// </summary>
         public void Destroy()
         {
-            _manager.RemoveActor(_guid);
+            _manager.RemoveObject(_guid);
         }
         /// <summary>
         /// Sets the guid for this object
