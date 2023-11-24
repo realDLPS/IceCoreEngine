@@ -35,9 +35,21 @@ namespace IceCoreEngine
         protected GraphicsManager _graphicsManager;
 
         /// <summary>
+        /// Used to create objects
+        /// </summary>
+        protected IceCoreObjectManager _objectManager;
+
+        /// <summary>
+        /// Simplifies creating actors
+        /// </summary>
+        protected ActorManager _actorManager;
+
+        /// <summary>
         /// Time since last frame
         /// </summary>
-        protected float _deltaTime = 0.0f;
+        private float _deltaTime = 0.0f;
+
+        protected float _timeScale = 1.0f;
 
         public IceCoreGame()
         {
@@ -51,6 +63,8 @@ namespace IceCoreEngine
             _collisionSystem = new CollisionSystem();
             _inputManager = new InputManager();
             _graphicsManager = new GraphicsManager(_graphics, _spriteBatch, Window);
+            _objectManager = new IceCoreObjectManager(this);
+            _actorManager = new ActorManager(_objectManager);
 
             base.Initialize();
         }
@@ -62,8 +76,10 @@ namespace IceCoreEngine
         protected override void Update(GameTime gameTime)
         {
             _deltaTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
+            
 
             _inputManager.UpdateInputs();
+            _objectManager.UpdateObjects(GetDeltaTime());
 
             base.Update(gameTime);
         }
@@ -72,5 +88,48 @@ namespace IceCoreEngine
         {
             base.Draw(gameTime);
         }
+
+        #region Delta time
+        /// <summary>
+        /// Get scaled delta time
+        /// </summary>
+        /// <returns></returns>
+        public float GetDeltaTime()
+        {
+            return _deltaTime * _timeScale;
+        }
+
+        /// <summary>
+        /// Gets unscaled delta time
+        /// </summary>
+        /// <returns></returns>
+        public float GetUnscaledDeltaTime()
+        {
+            return _deltaTime;
+        }
+        #endregion
+
+        #region Subsystem getting
+        public GraphicsManager GetGraphicsManager()
+        {
+            return _graphicsManager;
+        }
+        public SpriteBatch GetSpriteBatch()
+        {
+            return _spriteBatch;
+        }
+        public InputManager GetInputManager()
+        {
+            return _inputManager;
+        }
+        public IceCoreObjectManager GetObjectManager()
+        {
+            return _objectManager;
+        }
+        public ActorManager GetActorManager()
+        {
+            return _actorManager;
+        }
+        #endregion
     }
 }
