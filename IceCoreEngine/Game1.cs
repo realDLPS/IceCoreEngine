@@ -43,6 +43,9 @@ namespace IceCoreEngine
             _inputManager.AddInputAction(new InputAction(EInputType.Analog));
             _inputManager.QuickAddTriggerToAction(EInput.D, 1f);
             _inputManager.QuickAddTriggerToAction(EInput.A, -1f);
+
+            var temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(0.0f)));
+            temp.Game1 = this;
         }
 
         protected override void LoadContent()

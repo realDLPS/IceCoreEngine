@@ -185,4 +185,6 @@ namespace IceCoreEngine
             return Multiplier;
         }
     }
+    #endregion
+
 }

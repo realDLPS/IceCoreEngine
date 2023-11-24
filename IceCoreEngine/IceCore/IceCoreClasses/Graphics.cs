@@ -21,6 +21,8 @@ namespace IceCoreEngine
         public Vector2 CameraPosition = new Vector2(0.0f);
         public float CameraZoom = 1.0f;
 
+        private 
+
         //// Static variables
         private GraphicsDeviceManager GDM;
         private SpriteBatch SpriteBatch;
@@ -28,7 +30,6 @@ namespace IceCoreEngine
         private GameWindow Window;
 
 
-        //// Constructor
 
         public GraphicsManager(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameWindow window)
         {
@@ -38,10 +39,15 @@ namespace IceCoreEngine
             Window = window;
         }
 
+        /// <summary>
+        /// Draws all sprites that are added to the draw queue
+        /// </summary>
+        public void DrawQueue()
+        {
 
-        //// Functions
-        
+        }
 
+        #region Viewport methods
         /// <summary>
         /// Converts a world position to view space
         /// You may use IsSquareInView to check is this position on screen
@@ -91,9 +97,14 @@ namespace IceCoreEngine
         {
             return new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
+        #endregion
 
+        #region Adding to draw queue
         /// <summary>
         /// Convinience function to draw a sprite at a worldspace position
+        /// 
+        /// Adds the sprite to a queue. Drawn when the DrawQueue() method is called.
+        /// 
         /// Checks is the sprite on screen
         /// </summary>
         /// <param name="worldspacePosition">Worldspace position</param>
@@ -106,6 +117,9 @@ namespace IceCoreEngine
 
         /// <summary>
         /// Draws a sprite centered at this position
+        /// 
+        /// Adds the sprite to a queue. Drawn when the DrawQueue() method is called.
+        /// 
         /// Checks is the sprite on screen
         /// </summary>
         /// <param name="screenspacePosition"></param>
@@ -123,6 +137,8 @@ namespace IceCoreEngine
                 SpriteBatch.Draw(texture, screenspacePosition, null, Color.White, 0f, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, SpriteEffects.None, 0f);
             }
         }
+        #endregion
+
 
         /// <summary>
         /// Convinience function that makes sure the zoom never goes to anything unreasonable
@@ -132,7 +148,8 @@ namespace IceCoreEngine
         {
             CameraZoom = Math.Clamp(zoom, 0.1f, 10f);
         }
-
+        #region Window
+        #region Fullscreen
         /// <summary>
         /// Toggles fullscreen
         /// </summary>
@@ -185,7 +202,7 @@ namespace IceCoreEngine
         {
             return !GDM.HardwareModeSwitch;
         }
-
+        #endregion
         /// <summary>
         /// Toggles can window be resized by user
         /// </summary>
@@ -211,6 +228,7 @@ namespace IceCoreEngine
         {
             return Window.AllowUserResizing;
         }
+        #endregion
 
         /// <summary>
         /// Applies changes such as fullscreen and borderless fullscreen
