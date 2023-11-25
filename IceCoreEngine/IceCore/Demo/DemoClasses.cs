@@ -48,12 +48,9 @@ namespace IceCoreEngine
         public override void Update(float deltaTime)
         {
             base.Update(deltaTime);
-            Debug.WriteLine(_owner.GetPosition());
-            Debug.WriteLine(_game._graphicsManager.CameraPosition);
+            Debug.WriteLine(Texture);
 
-            _game._spriteBatch.Begin();
-            _game._graphicsManager.DrawWorldSpriteCentered(_owner.GetPosition(), Texture, 1.0f);
-            _game._spriteBatch.End();
+            _game.GetGraphicsManager().AddWorldSpriteCentered(_owner.GetPosition(), Texture, 1.0f);
         }
     }
 }

@@ -188,4 +188,29 @@ namespace IceCoreEngine
     }
     #endregion
 
+
+    #region Graphics
+
+    public struct DrawQueueMember
+    {
+        public Vector2 ScreenPosition;
+        public Texture2D Texture;
+        public Color Color = Color.White;
+        public float Rotation;
+        public Vector2 Origin;
+        public float Scale;
+        public SpriteEffects SpriteEffects = SpriteEffects.None;
+        public float LayerDepth;
+
+        public DrawQueueMember(Vector2 screenPosition, Texture2D texture, float rotation, Vector2 origin, float scale, float layerDepth)
+        {
+            ScreenPosition = screenPosition;
+            Texture = texture;
+            Rotation = rotation;
+            Origin = origin;
+            Scale = scale;
+            LayerDepth = layerDepth;
+        }
+    }
+    #endregion
 }

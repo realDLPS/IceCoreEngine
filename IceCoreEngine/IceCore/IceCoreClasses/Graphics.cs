@@ -21,7 +21,7 @@ namespace IceCoreEngine
         public Vector2 CameraPosition = new Vector2(0.0f);
         public float CameraZoom = 1.0f;
 
-        private 
+        private List<DrawQueueMember> DrawQueue = new List<DrawQueueMember>();
 
         //// Static variables
         private GraphicsDeviceManager GDM;
@@ -39,14 +39,31 @@ namespace IceCoreEngine
             Window = window;
         }
 
-        /// <summary>
-        /// Draws all sprites that are added to the draw queue
-        /// </summary>
-        public void DrawQueue()
-        {
+        #region Drawing
 
+        public void BeginDraw()
+        {
+            SpriteBatch.Begin();
+        }
+        public void EndDraw()
+        {
+            SpriteBatch.End();
         }
 
+        /// <summary>
+        /// Draws all sprites that are added to the draw queue
+        /// 
+        /// Expects that the begin method has been called on the sprite batch.
+        /// </summary>
+        public void Draw()
+        {
+            foreach (DrawQueueMember Sprite in DrawQueue)
+            {
+                SpriteBatch.Draw(Sprite.Texture, Sprite.ScreenPosition, null, Sprite.Color, Sprite.Rotation, Sprite.Origin, Sprite.Scale, Sprite.SpriteEffects, Sprite.LayerDepth);
+            }
+            DrawQueue.Clear();
+        }
+        #endregion
         #region Viewport methods
         /// <summary>
         /// Converts a world position to view space
@@ -110,9 +127,9 @@ namespace IceCoreEngine
         /// <param name="worldspacePosition">Worldspace position</param>
         /// <param name="texture"></param>
         /// <param name="scale">Multiplier for the scale of the texture</param>
-        public void DrawWorldSpriteCentered(Vector2 worldspacePosition, Texture2D texture, float scale)
+        public void AddWorldSpriteCentered(Vector2 worldspacePosition, Texture2D texture, float scale)
         {
-            DrawSpriteCentered(WorldToViewSpace(worldspacePosition), texture, scale);
+            AddSpriteCentered(WorldToViewSpace(worldspacePosition), texture, scale);
         }
 
         /// <summary>
@@ -125,16 +142,15 @@ namespace IceCoreEngine
         /// <param name="screenspacePosition"></param>
         /// <param name="texture"></param>
         /// <param name="scale">Multiplier for the scale of the texture</param>
-        public void DrawSpriteCentered(Vector2 screenspacePosition, Texture2D texture, float scale)
+        public void AddSpriteCentered(Vector2 screenspacePosition, Texture2D texture, float scale)
         {
             Vector2 SpriteSize = new Vector2(texture.Width, texture.Height);
             Vector2 ViewportSize = GetViewportSize();
             float ScreenSizeScaling = ((ViewportSize.X / 1920 >= ViewportSize.Y / 1080) ? ViewportSize.X / 1920 : ViewportSize.Y / 1080);
 
-
             if (IsSquareInView(new Square(screenspacePosition, SpriteSize)))
             {
-                SpriteBatch.Draw(texture, screenspacePosition, null, Color.White, 0f, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, SpriteEffects.None, 0f);
+                DrawQueue.Add(new DrawQueueMember(screenspacePosition, texture, 0f, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, 0f));
             }
         }
         #endregion

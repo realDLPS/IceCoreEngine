@@ -67,16 +67,18 @@ namespace IceCoreEngine
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            _graphicsManager.DrawSpriteCentered(_graphicsManager.GetViewportSize() / 2, ball, 1f);
-            _graphicsManager.DrawWorldSpriteCentered(new Vector2(100, 250), cross, .5f);
-            _graphicsManager.DrawWorldSpriteCentered(new Vector2(500, 350), cross, .5f);
-            _graphicsManager.DrawWorldSpriteCentered(new Vector2(-200, -100), cross, .5f);
+            GetGraphicsManager().BeginDraw();
 
-            _spriteBatch.End();
-            
+            GetGraphicsManager().AddSpriteCentered(_graphicsManager.GetViewportSize() / 2, ball, 1f);
+            GetGraphicsManager().AddWorldSpriteCentered(new Vector2(100, 250), cross, .5f);
+            GetGraphicsManager().AddWorldSpriteCentered(new Vector2(500, 350), cross, .5f);
+            GetGraphicsManager().AddWorldSpriteCentered(new Vector2(-200, -100), cross, .5f);
+
+            GetGraphicsManager().Draw();
+
+            GetGraphicsManager().EndDraw();
+
             base.Draw(gameTime);
         }
 
@@ -87,7 +89,7 @@ namespace IceCoreEngine
             {
                 Input.Normalize();
             }
-            _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + Input * 125f * _deltaTime;
+            _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + Input * 125f * GetDeltaTime();
         }
 
         #region Input callbacks
