@@ -72,6 +72,7 @@ namespace IceCoreEngine
             Size = new Vector2(1.0f);
         }
     }
+    #region Input
     public struct InputAction
     {
         /// <summary>
