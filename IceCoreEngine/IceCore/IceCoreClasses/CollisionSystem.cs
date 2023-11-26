@@ -9,6 +9,9 @@ using System.Xml.Linq;
 
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using nkast.Aether.Physics2D;
+using nkast.Aether.Physics2D.Collision;
+using nkast.Aether.Physics2D.Dynamics;
 
 namespace IceCoreEngine
 {
@@ -20,9 +23,11 @@ namespace IceCoreEngine
         public QuadTreeNode QuadTreeRoot;
         public float QuadTreeSize;
 
+        private World _world;
+
         public CollisionSystem()
         {
-
+            _world = new World(new Vector2(0f));
         }
 
         /// <summary>
