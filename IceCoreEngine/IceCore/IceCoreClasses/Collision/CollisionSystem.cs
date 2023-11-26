@@ -16,27 +16,27 @@ using nkast.Aether.Physics2D.Dynamics;
 namespace IceCoreEngine
 {
     /// <summary>
-    /// Handles collision using a quadtree and AABB collision detection.
+    /// 
     /// </summary>
     public class CollisionSystem
     {
-        public QuadTreeNode QuadTreeRoot;
-        public float QuadTreeSize;
-
-        private World _world;
-
         public CollisionSystem()
         {
-            _world = new World(new Vector2(0f));
+            
         }
 
+
+
+
         /// <summary>
-        /// Corners count as overlap, makes some stuff easier, and the function way simpler
+        /// Corners and edges count as overlap, makes some stuff easier, and the function way simpler
+        /// 
+        /// Currently not used. May be used for UI in the future.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns>True if boxes overlap</returns>
-        public static bool AABB(Square a, Square b)
+        public static bool IceCoreAABB(Square a, Square b)
         {
             bool IsARight = false;
             if (a.Position.X >= b.Position.X)
@@ -71,26 +71,6 @@ namespace IceCoreEngine
             }
 
             return true;
-        }
-
-
-        public void CreateQuadTree(float size)
-        {
-            QuadTreeSize = size;
-            QuadTreeRoot = new QuadTreeNode(null, 0, new Vector2(0.0f), QuadTreeSize, true, null);
-        }
-
-        public void RebuildQuadTree(QuadTreeNode node)
-        {
-            node.UpdateNeighbours();
-            if (node.HasSplit)
-            {
-                foreach (QuadTreeNode item in node.Children)
-                {
-                    item.DrawNeighbourInfo = false;
-                    RebuildQuadTree(item);
-                }
-            }
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Xml.Linq;
 
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using nkast.Aether.Physics2D.Dynamics;
 
 namespace IceCoreEngine
 {
@@ -45,6 +46,15 @@ namespace IceCoreEngine
         protected ActorManager _actorManager;
 
         /// <summary>
+        /// Aether world
+        /// </summary>
+        protected World _world;
+        /// <summary>
+        /// Gravity
+        /// </summary>
+        protected Vector2 _gravity = new Vector2(0f);
+
+        /// <summary>
         /// Time since last frame
         /// </summary>
         private float _deltaTime = 0.0f;
@@ -65,6 +75,7 @@ namespace IceCoreEngine
             _graphicsManager = new GraphicsManager(_graphics, _spriteBatch, Window);
             _objectManager = new IceCoreObjectManager(this);
             _actorManager = new ActorManager(_objectManager);
+            _world = new World(_gravity);
 
             base.Initialize();
         }
@@ -129,6 +140,10 @@ namespace IceCoreEngine
         public ActorManager GetActorManager()
         {
             return _actorManager;
+        }
+        public World GetWorld()
+        {
+            return _world;
         }
         #endregion
     }
