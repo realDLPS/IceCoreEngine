@@ -12,7 +12,7 @@ using System.Reflection.Metadata;
 
 namespace IceCoreEngine
 {
-    public class VectorMath2D
+    public class ICVec2Math
     {
         /// <summary>
         /// Calculates a unit vector that points from the origin to the target
@@ -34,6 +34,13 @@ namespace IceCoreEngine
 
             // If the length is 0, which means the vectors are the same return a vector with {0.0f, 0.0f} for its components
             return new Vector2(0.0f);
+        }
+        public static Vector2 RotateVector(Vector2 vector, float degrees)
+        {
+            Matrix RotationMatrix;
+            Matrix.CreateRotationZ(ICFloatMath.ConvertDegreesToRadians(degrees), out RotationMatrix);
+
+            return Vector2.Transform(vector, RotationMatrix);
         }
     }
 }

@@ -48,10 +48,12 @@ namespace IceCoreEngine
             _inputManager.QuickAddTriggerToAction(EInput.Right, -1f);
             _inputManager.QuickAddTriggerToAction(EInput.Left, 1f);
 
-            var temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(-25f, 0f)));
-            temp.Velocity = new Vector2(25f, 0);
-            temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(25f, 0f)));
-            temp.Velocity = new Vector2(-25f, 0);
+            var temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(-250f, 0f)));
+            temp.Velocity = new Vector2(100f, 0);
+            temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(250f, 0f)));
+            temp.Velocity = new Vector2(-50f, 0);
+
+            _actorManager.SpawnActor<TestPlayer>(true, new Transform(new Vector2(0f)));
         }
 
         protected override void LoadContent()
@@ -69,7 +71,9 @@ namespace IceCoreEngine
 
             Debug.WriteLine(GetWorld().BodyList.Count());
 
-            Move();
+            GetGraphicsManager().CameraRotation = _graphicsManager.CameraRotation + _inputManager.GetActionValue(3) * 100 * GetDeltaTime();
+
+            //Move();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -90,16 +94,17 @@ namespace IceCoreEngine
             base.Draw(gameTime);
         }
 
-        private void Move()
-        {
-            Vector2 Input = new Vector2(_inputManager.GetActionValue(2), _inputManager.GetActionValue(1));
-            if(Input.LengthSquared() > 0)
-            {
-                Input.Normalize();
-            }
-            GetGraphicsManager().CameraRotation = _graphicsManager.CameraRotation + _inputManager.GetActionValue(3) * 1 * GetDeltaTime();
-            _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + Input * 125f * GetDeltaTime();
-        }
+        //private void Move()
+        //{
+        //    Vector2 Input = new Vector2(_inputManager.GetActionValue(2), _inputManager.GetActionValue(1));
+        //    if(Input.LengthSquared() > 0)
+        //    {
+        //        Input.Normalize();
+        //        Input = ICVec2Math.RotateVector(Input, _graphicsManager.CameraRotation);
+        //    }
+        //    
+        //    _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + Input * 125f * GetDeltaTime();
+        //}
 
         #region Input callbacks
         protected void ExitGame(float value)
