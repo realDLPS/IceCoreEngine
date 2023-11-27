@@ -20,6 +20,7 @@ namespace IceCoreEngine
         /// </summary>
         public Vector2 CameraPosition = new Vector2(0.0f);
         public float CameraZoom = 1.0f;
+        public float CameraRotation = 0.0f;
 
         private List<DrawQueueMember> DrawQueue = new List<DrawQueueMember>();
 
@@ -59,7 +60,7 @@ namespace IceCoreEngine
         {
             foreach (DrawQueueMember Sprite in DrawQueue)
             {
-                SpriteBatch.Draw(Sprite.Texture, Sprite.ScreenPosition, null, Sprite.Color, Sprite.Rotation, Sprite.Origin, Sprite.Scale, Sprite.SpriteEffects, Sprite.LayerDepth);
+                SpriteBatch.Draw(Sprite.Texture, Sprite.ScreenPosition, null, Sprite.Color, Sprite.Rotation + CameraRotation, Sprite.Origin, Sprite.Scale, Sprite.SpriteEffects, Sprite.LayerDepth);
             }
             DrawQueue.Clear();
         }
@@ -86,8 +87,13 @@ namespace IceCoreEngine
             float ScreenSizeScaling = ((ViewportSize.X / 1920 >= ViewportSize.Y / 1080) ? ViewportSize.X / 1920 : ViewportSize.Y / 1080);
             Vector2 ScreenSizedPosition = ZoomedPosition * ScreenSizeScaling;
 
+            Matrix RotationMatrix;
+            Matrix.CreateRotationZ(CameraRotation, out RotationMatrix);
+
+            Vector2 RotatedPosition = Vector2.Transform(ScreenSizedPosition, RotationMatrix);
+
             // Lastly we want to move this vector into proper position as the camera position is in the center of the screen instead of the pixel {0,0} that is in the top left corner
-            return (ScreenSizedPosition + (ViewportSize/2));
+            return (RotatedPosition + (ViewportSize/2));
         }
 
         /// <summary>

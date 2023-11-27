@@ -88,9 +88,11 @@ namespace IceCoreEngine
         {
             _deltaTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
             
+            _world.Step(GetDeltaTime());
 
             _inputManager.UpdateInputs();
             _objectManager.UpdateObjects(GetDeltaTime());
+
 
             base.Update(gameTime);
         }

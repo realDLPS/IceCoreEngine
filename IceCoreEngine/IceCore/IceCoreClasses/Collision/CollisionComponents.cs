@@ -19,16 +19,22 @@ namespace IceCoreEngine
 
         public CollisionComponent()
         {
-            _body = _game.GetWorld().CreateBody();
-            _body.OnCollision
+        }
+
+        public override void Created()
+        {
+            _body = _game.GetWorld().CreateBody(_owner.GetPosition());
+
+            base.Created();
         }
         /// <summary>
         /// Removes the old body
         /// </summary>
         /// <param name="body"></param>
-        protected void SetBody(Body body)
+        public void SetBody(Body body)
         {
             _game.GetWorld().Remove(_body); // Not checked, might be slow
+
             _body = body;
         }
         public Body GetBody()

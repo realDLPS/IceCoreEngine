@@ -44,8 +44,14 @@ namespace IceCoreEngine
             _inputManager.QuickAddTriggerToAction(EInput.D, 1f);
             _inputManager.QuickAddTriggerToAction(EInput.A, -1f);
 
-            var temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(0.0f)));
-            temp.Game1 = this;
+            _inputManager.AddInputAction(new InputAction(EInputType.Analog));
+            _inputManager.QuickAddTriggerToAction(EInput.Right, -1f);
+            _inputManager.QuickAddTriggerToAction(EInput.Left, 1f);
+
+            var temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(-25f, 0f)));
+            temp.Velocity = new Vector2(25f, 0);
+            temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(25f, 0f)));
+            temp.Velocity = new Vector2(-25f, 0);
         }
 
         protected override void LoadContent()
@@ -60,6 +66,8 @@ namespace IceCoreEngine
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime); // It is recommended that you do not do anything before this
+
+            Debug.WriteLine(GetWorld().BodyList.Count());
 
             Move();
         }
@@ -89,6 +97,7 @@ namespace IceCoreEngine
             {
                 Input.Normalize();
             }
+            GetGraphicsManager().CameraRotation = _graphicsManager.CameraRotation + _inputManager.GetActionValue(3) * 1 * GetDeltaTime();
             _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + Input * 125f * GetDeltaTime();
         }
 
