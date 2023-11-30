@@ -60,7 +60,7 @@ namespace IceCoreEngine
         {
             foreach (DrawQueueMember Sprite in DrawQueue)
             {
-                SpriteBatch.Draw(Sprite.Texture, Sprite.ScreenPosition, null, Sprite.Color, Sprite.Rotation + ICFloatMath.ConvertDegreesToRadians(CameraRotation), Sprite.Origin, Sprite.Scale, Sprite.SpriteEffects, Sprite.LayerDepth);
+                SpriteBatch.Draw(Sprite.Texture, Sprite.ScreenPosition, null, Sprite.Color, ICFloatMath.ConvertDegreesToRadians(Sprite.Rotation) * -1 + ICFloatMath.ConvertDegreesToRadians(CameraRotation), Sprite.Origin, Sprite.Scale, Sprite.SpriteEffects, Sprite.LayerDepth);
             }
             DrawQueue.Clear();
         }
@@ -130,9 +130,9 @@ namespace IceCoreEngine
         /// <param name="worldspacePosition">Worldspace position</param>
         /// <param name="texture"></param>
         /// <param name="scale">Multiplier for the scale of the texture</param>
-        public void AddWorldSpriteCentered(Vector2 worldspacePosition, Texture2D texture, float scale)
+        public void AddWorldSpriteCentered(Vector2 worldspacePosition, Texture2D texture, float scale, float rotation)
         {
-            AddSpriteCentered(WorldToViewSpace(worldspacePosition), texture, scale);
+            AddSpriteCentered(WorldToViewSpace(worldspacePosition), texture, scale, rotation);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace IceCoreEngine
         /// <param name="screenspacePosition"></param>
         /// <param name="texture"></param>
         /// <param name="scale">Multiplier for the scale of the texture</param>
-        public void AddSpriteCentered(Vector2 screenspacePosition, Texture2D texture, float scale)
+        public void AddSpriteCentered(Vector2 screenspacePosition, Texture2D texture, float scale, float rotation)
         {
             Vector2 SpriteSize = new Vector2(texture.Width, texture.Height);
             Vector2 ViewportSize = GetViewportSize();
@@ -153,7 +153,7 @@ namespace IceCoreEngine
 
             if (IsSquareInView(new Square(screenspacePosition, SpriteSize)))
             {
-                DrawQueue.Add(new DrawQueueMember(screenspacePosition, texture, 0f, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, 0f));
+                DrawQueue.Add(new DrawQueueMember(screenspacePosition, texture, rotation, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, 0f));
             }
         }
         #endregion

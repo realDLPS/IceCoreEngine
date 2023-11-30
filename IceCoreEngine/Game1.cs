@@ -53,6 +53,11 @@ namespace IceCoreEngine
             temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(250f, 0f)));
             temp.Velocity = new Vector2(-50f, 0);
 
+            var temp2 = _actorManager.SpawnActor<CrossActor>(true, new Transform(new Vector2(100, 250)));
+            temp2.RotSpeed = 20f;
+            _actorManager.SpawnActor<CrossActor>(true, new Transform(new Vector2(500, 350)));
+            _actorManager.SpawnActor<CrossActor>(true, new Transform(new Vector2(-200, -100)));
+
             _actorManager.SpawnActor<TestPlayer>(true, new Transform(new Vector2(0f)));
         }
 
@@ -82,10 +87,10 @@ namespace IceCoreEngine
 
             GetGraphicsManager().BeginDraw();
 
-            GetGraphicsManager().AddSpriteCentered(_graphicsManager.GetViewportSize() / 2, ball, 1f);
-            GetGraphicsManager().AddWorldSpriteCentered(new Vector2(100, 250), cross, .5f);
-            GetGraphicsManager().AddWorldSpriteCentered(new Vector2(500, 350), cross, .5f);
-            GetGraphicsManager().AddWorldSpriteCentered(new Vector2(-200, -100), cross, .5f);
+            //GetGraphicsManager().AddSpriteCentered(_graphicsManager.GetViewportSize() / 2, ball, 1f);
+            //GetGraphicsManager().AddWorldSpriteCentered(new Vector2(100, 250), cross, .5f);
+            //GetGraphicsManager().AddWorldSpriteCentered(new Vector2(500, 350), cross, .5f);
+            //GetGraphicsManager().AddWorldSpriteCentered(new Vector2(-200, -100), cross, .5f);
 
             GetGraphicsManager().Draw();
 

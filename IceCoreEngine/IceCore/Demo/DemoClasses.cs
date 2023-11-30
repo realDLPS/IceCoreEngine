@@ -27,8 +27,6 @@ namespace IceCoreEngine
 
         public override void Created()
         {
-            base.Created();
-
             SRC = _actorManager.AddComponentToActor<SpriteRenderComponent>(true, this);
             CC = _actorManager.AddComponentToActor<CollisionComponent>(true, this);
             CC.SetBody(_game.GetWorld().CreateCircle(8f, 1f, GetPosition(), BodyType.Dynamic));
@@ -50,6 +48,46 @@ namespace IceCoreEngine
             base.Update(deltaTime);
         }
     }
+    public class CrossActor : Actor
+    {
+        private SpriteRenderComponent SRC;
+        private CollisionComponent CC;
+        private float Rotation = 0.0f;
+        public float RotSpeed = 0.0f;
+
+        public CrossActor()
+        {
+
+        }
+
+        public override void Created()
+        {
+            SRC = _actorManager.AddComponentToActor<SpriteRenderComponent>(true, this);
+            CC = _actorManager.AddComponentToActor<RectangleCollisionComponent>(true, this);
+            CC.GetBody().BodyType = BodyType.Static;
+            CC.GetBody().CreateRectangle(2f, 128f, 1f, Vector2.Zero);
+            CC.GetBody().CreateRectangle(128f, 2f, 1f, Vector2.Zero);
+        }
+        public override void Update(float deltaTime)
+        {
+            if (SRC != null)
+            {
+                SRC.SetTexture(((Game1)_game).cross);
+                SRC._scale = 0.5f;
+            }
+            if (CC != null)
+            {
+                Rotation += deltaTime * RotSpeed;
+                CC.GetBody().Rotation = ICFloatMath.ConvertDegreesToRadians(Rotation);
+                CC.GetBody().LinearVelocity = Vector2.Zero;
+            }
+
+            
+            
+
+            base.Update(deltaTime);
+        }
+    }
 
     public class TestPlayer : Actor
     {
@@ -64,8 +102,6 @@ namespace IceCoreEngine
 
         public override void Created()
         {
-            base.Created();
-
             SRC = _actorManager.AddComponentToActor<SpriteRenderComponent>(true, this);
             CC = _actorManager.AddComponentToActor<CollisionComponent>(true, this);
             CC.SetBody(_game.GetWorld().CreateCircle(8f, 1f, GetPosition(), BodyType.Dynamic));
@@ -99,6 +135,7 @@ namespace IceCoreEngine
     public class SpriteRenderComponent : ActorComponent
     {
         private Texture2D Texture;
+        public float _scale = 1f;
 
         public SpriteRenderComponent()
         {
@@ -113,7 +150,7 @@ namespace IceCoreEngine
         {
             base.Update(deltaTime);
 
-            _game.GetGraphicsManager().AddWorldSpriteCentered(_owner.GetPosition(), Texture, 1.0f);
+            _game.GetGraphicsManager().AddWorldSpriteCentered(_owner.GetPosition(), Texture, _scale, _owner.GetRotation());
         }
     }
 }

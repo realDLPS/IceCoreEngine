@@ -24,8 +24,6 @@ namespace IceCoreEngine
         public override void Created()
         {
             _body = _game.GetWorld().CreateBody(_owner.GetPosition());
-
-            base.Created();
         }
         /// <summary>
         /// Removes the old body
@@ -33,7 +31,10 @@ namespace IceCoreEngine
         /// <param name="body"></param>
         public void SetBody(Body body)
         {
-            _game.GetWorld().Remove(_body); // Not checked, might be slow
+            if(_body != null)
+            {
+                _game.GetWorld().Remove(_body); // Not checked, might be slow
+            }
 
             _body = body;
         }
@@ -44,12 +45,44 @@ namespace IceCoreEngine
         public override void Update(float deltaTime)
         {
             _owner.SetPosition(_body.Position);
+            _owner.SetRotation(ICFloatMath.ConvertRadiansToDegrees(_body.Rotation));
 
             base.Update(deltaTime);
         }
         public void UpdatePosition(Vector2 position)
         {
             _body.Position = position;
+        }
+        public void ClearFixtures()
+        {
+            foreach (Fixture fixture in _body.FixtureList)
+            {
+                _body.Remove(fixture);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Kind of worthless currently
+    /// </summary>
+    public class RectangleCollisionComponent : CollisionComponent
+    {
+        public Vector2 Size = new Vector2(1f);
+
+        public RectangleCollisionComponent()
+        {
+
+        }
+
+        public override void Created()
+        {
+            SetBody(_game.GetWorld().CreateRectangle(Size.X, Size.Y, 1f, _owner.GetPosition(), _owner.GetRotation(), BodyType.Dynamic));
+        }
+        public void ChangeSize(Vector2 size)
+        {
+            Size = size;
+            ClearFixtures();
+            GetBody().CreateRectangle(Size.X, Size.Y, 1f, Vector2.Zero);
         }
     }
 }
