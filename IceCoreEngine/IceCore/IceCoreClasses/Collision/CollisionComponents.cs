@@ -60,6 +60,10 @@ namespace IceCoreEngine
                 _body.Remove(fixture);
             }
         }
+        public void AddFixture(Fixture fixture)
+        {
+            _body.Add(fixture);
+        }
     }
 
     /// <summary>
