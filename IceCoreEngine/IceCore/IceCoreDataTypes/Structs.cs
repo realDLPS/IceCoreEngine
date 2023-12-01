@@ -9,6 +9,7 @@ using System.Xml.Linq;
 
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using nkast.Aether.Physics2D.Dynamics;
 
 namespace IceCoreEngine
 {
@@ -188,6 +189,27 @@ namespace IceCoreEngine
     }
     #endregion
 
+    #region Collision
+
+    public struct LinetraceResponse
+    {
+        public Fixture Fixture;
+
+        /// <summary>
+        /// Either the hit position or end of the line
+        /// </summary>
+        public Vector2 Position;
+        public Vector2 Normal;
+
+        public LinetraceResponse(Fixture fixture, Vector2 position, Vector2 normal)
+        {
+            Fixture = fixture;
+            Position = position;
+            Normal = normal;
+        }
+    }
+
+    #endregion
 
     #region Graphics
 

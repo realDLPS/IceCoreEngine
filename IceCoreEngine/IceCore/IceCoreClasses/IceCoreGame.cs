@@ -70,12 +70,12 @@ namespace IceCoreEngine
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _collisionSystem = new CollisionSystem();
             _inputManager = new InputManager();
             _graphicsManager = new GraphicsManager(_graphics, _spriteBatch, Window);
             _objectManager = new IceCoreObjectManager(this);
             _actorManager = new ActorManager(_objectManager);
             _world = new World(_gravity);
+            _collisionSystem = new CollisionSystem(this);
 
             base.Initialize();
         }
@@ -146,6 +146,10 @@ namespace IceCoreEngine
         public World GetWorld()
         {
             return _world;
+        }
+        public CollisionSystem GetCollisionSystem()
+        {
+            return _collisionSystem;
         }
         #endregion
     }

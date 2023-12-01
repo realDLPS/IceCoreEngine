@@ -60,15 +60,8 @@ namespace IceCoreEngine
                 _body.Remove(fixture);
             }
         }
-        public void AddFixture(Fixture fixture)
-        {
-            _body.Add(fixture);
-        }
     }
 
-    /// <summary>
-    /// Kind of worthless currently
-    /// </summary>
     public class RectangleCollisionComponent : CollisionComponent
     {
         public Vector2 Size = new Vector2(1f);
@@ -87,6 +80,26 @@ namespace IceCoreEngine
             Size = size;
             ClearFixtures();
             GetBody().CreateRectangle(Size.X, Size.Y, 1f, Vector2.Zero);
+        }
+    }
+    public class CircleCollisionComponent : CollisionComponent
+    {
+        public float Radius = 1f;
+
+        public CircleCollisionComponent()
+        {
+
+        }
+
+        public override void Created()
+        {
+            SetBody(_game.GetWorld().CreateCircle(Radius, 1f, _owner.GetPosition(), BodyType.Dynamic));
+        }
+        public void ChangeRadius(float radius)
+        {
+            Radius = radius;
+            ClearFixtures();
+            GetBody().CreateCircle(Radius, 1f, Vector2.Zero);
         }
     }
 }

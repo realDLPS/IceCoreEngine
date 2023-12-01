@@ -127,8 +127,24 @@ namespace IceCoreEngine
                 CC.GetBody().LinearVelocity = Input * 500f;
             }
 
+            Vector2 ForwardVector = ICVec2Math.RotateVector(new Vector2(0f, 1f), _game.GetGraphicsManager().CameraRotation);
+
+            _game.GetCollisionSystem().LinetraceSingle(GetPosition(), GetPosition() + ForwardVector * 500f, LinetraceHit);
+
             _game.GetGraphicsManager().CameraPosition = GetPosition();
             base.Update(deltaTime);
+        }
+
+        public void LinetraceHit(List<LinetraceResponse> hits)
+        {
+            Debug.WriteLine(hits.Count);
+
+            foreach (var item in hits)
+            {
+                Debug.WriteLine(item.Position.ToString());
+                _game.GetGraphicsManager().AddWorldSpriteCentered(item.Position, ((Game1)_game).ball, 0.5f, 0f);
+            }
+            
         }
     }
 

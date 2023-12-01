@@ -7,4 +7,5 @@ using System.Threading.Tasks;
 namespace IceCoreEngine
 {
     public delegate void InputDelegate(float value);
+    public delegate void FinishedLineTrace(List<LinetraceResponse> hits);
 }

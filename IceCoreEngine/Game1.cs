@@ -74,9 +74,7 @@ namespace IceCoreEngine
         {
             base.Update(gameTime); // It is recommended that you do not do anything before this
 
-            Debug.WriteLine(GetWorld().BodyList.Count());
-
-            GetGraphicsManager().CameraRotation = _graphicsManager.CameraRotation + _inputManager.GetActionValue(3) * 100 * GetDeltaTime();
+            GetGraphicsManager().CameraRotation = _graphicsManager.CameraRotation + _inputManager.GetActionValue(3) * 25 * GetDeltaTime();
 
             //Move();
         }
