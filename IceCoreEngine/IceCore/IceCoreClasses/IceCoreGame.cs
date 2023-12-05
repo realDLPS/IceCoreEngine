@@ -71,7 +71,7 @@ namespace IceCoreEngine
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _inputManager = new InputManager();
-            _graphicsManager = new GraphicsManager(_graphics, _spriteBatch, Window);
+            _graphicsManager = new GraphicsManager(this, _graphics, _spriteBatch, Window);
             _objectManager = new IceCoreObjectManager(this);
             _actorManager = new ActorManager(_objectManager);
             _world = new World(_gravity);
@@ -93,6 +93,7 @@ namespace IceCoreEngine
             _inputManager.UpdateInputs();
             _objectManager.UpdateObjects(GetDeltaTime());
 
+            _graphicsManager.Update(_deltaTime);
 
             base.Update(gameTime);
         }

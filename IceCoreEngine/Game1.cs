@@ -31,6 +31,8 @@ namespace IceCoreEngine
 
             _graphicsManager.SetBorderlessWindow(true);
             _graphicsManager.SetFullScreen(true);
+            _graphicsManager.SetMouseClamppingToWindow(true);
+            _graphicsManager.SetMouseVisibility(false);
             _graphicsManager.ApplySettings();
 
             _inputManager.AddInputAction(new InputAction(EInputType.Digital, ExitGame));

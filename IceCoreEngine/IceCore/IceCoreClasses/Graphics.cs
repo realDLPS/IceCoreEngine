@@ -24,16 +24,24 @@ namespace IceCoreEngine
 
         private List<DrawQueueMember> DrawQueue = new List<DrawQueueMember>();
 
+        private bool DesiredMouseVisibility = true;
+
+        private bool ClampMouseToGameWindow = false;
+
+        private bool WasInFocus = false;
+
         //// Static variables
         private GraphicsDeviceManager GDM;
         private SpriteBatch SpriteBatch;
         private GraphicsDevice GraphicsDevice;
         private GameWindow Window;
+        private IceCoreGame Game;
 
+        
 
-
-        public GraphicsManager(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameWindow window)
+        public GraphicsManager(IceCoreGame game, GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameWindow window)
         {
+            Game = game;
             GDM = graphics;
             SpriteBatch = spriteBatch;
             GraphicsDevice = spriteBatch.GraphicsDevice;
@@ -49,6 +57,37 @@ namespace IceCoreEngine
         public void EndDraw()
         {
             SpriteBatch.End();
+        }
+
+        public void Update(float deltaTime)
+        {
+            if(Game.IsActive && (ClampMouseToGameWindow || !DesiredMouseVisibility))
+            {
+                ClampMouseToWindow();
+            }
+
+            if (!Game.IsActive || DesiredMouseVisibility)
+            {
+                Game.IsMouseVisible = true;
+            }
+            else
+            {
+                Game.IsMouseVisible = false;
+            }
+
+            if(Game.IsActive != WasInFocus)
+            {
+                if(WasInFocus)
+                {
+                    OnLoseFocus();
+                }
+                else
+                {
+                    OnFocus();
+                }
+
+                WasInFocus = Game.IsActive;
+            }
         }
 
         /// <summary>
@@ -117,6 +156,26 @@ namespace IceCoreEngine
         {
             return new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
+
+        public void OnFocus()
+        {
+
+        }
+        public void OnLoseFocus()
+        {
+
+        }
+
+        public void ClampMouseToWindow()
+        {
+            Point MousePosition = Mouse.GetState().Position;
+            Vector2 ViewportSize = GetViewportSize();
+
+            MousePosition.X = Math.Clamp(MousePosition.X, 0, (int)ViewportSize.X);
+            MousePosition.Y = Math.Clamp(MousePosition.Y, (IsFullScreen() ? 0 : -30), (int)ViewportSize.Y);
+
+            Mouse.SetPosition(MousePosition.X, MousePosition.Y);
+        }
         #endregion
 
         #region Adding to draw queue
@@ -167,6 +226,35 @@ namespace IceCoreEngine
         {
             CameraZoom = Math.Clamp(zoom, 0.1f, 10f);
         }
+
+        #region Mouse
+        public void SetMouseVisibility(bool visible)
+        {
+            DesiredMouseVisibility = visible;
+        }
+        public void ToggleMouseVisibility()
+        {
+            DesiredMouseVisibility = !DesiredMouseVisibility;
+        }
+        public bool IsMouseVisible()
+        {
+            return DesiredMouseVisibility;
+        }
+
+        public void SetMouseClamppingToWindow(bool clampMouseToWindow)
+        {
+            ClampMouseToGameWindow = clampMouseToWindow;
+        }
+        public void ToggleMouseClamppingToWindow()
+        {
+            ClampMouseToGameWindow = !ClampMouseToGameWindow;
+        }
+        public bool IsMouseClamppedToWindow()
+        {
+            return ClampMouseToGameWindow;
+        }
+        #endregion
+
         #region Window
         #region Fullscreen
         /// <summary>

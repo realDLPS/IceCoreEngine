@@ -137,11 +137,8 @@ namespace IceCoreEngine
 
         public void LinetraceHit(List<LinetraceResponse> hits)
         {
-            Debug.WriteLine(hits.Count);
-
             foreach (var item in hits)
             {
-                Debug.WriteLine(item.Position.ToString());
                 _game.GetGraphicsManager().AddWorldSpriteCentered(item.Position, ((Game1)_game).ball, 0.5f, 0f);
             }
             
