@@ -84,7 +84,7 @@ namespace IceCoreEngine
             private float LinetraceHandler(Fixture fixture, Vector2 point, Vector2 normal, float fraction)
             {
                 // Check is the fixture in a category that should block this ray
-                if(Categories.Contains(fixture.CollisionCategories))
+                if (Categories.Contains(fixture.CollisionCategories))
                 {
                     // If there hasn't been a hit before clear the hits.
                     if (Hit == false)
@@ -127,7 +127,7 @@ namespace IceCoreEngine
                 // Loop over all of the other hits
                 foreach (LinetraceResponse hit in Hits)
                 {
-                    if(Vector2.DistanceSquared(ClosestHit.Position, Start) > Vector2.DistanceSquared(hit.Position, Start))
+                    if (Vector2.DistanceSquared(ClosestHit.Position, Start) > Vector2.DistanceSquared(hit.Position, Start))
                     {
                         ClosestHit = hit;
                     }
@@ -153,11 +153,11 @@ namespace IceCoreEngine
             }
 
             // Checks is the box to the left too far away from the box on the right on the X-axis
-            if (IsARight && a.Position.X - a.Size.X / 2 > b.Position.X + b.Size.X / 2)
+            if (IsARight && a.Position.X - a.Scale.X / 2 > b.Position.X + b.Scale.X / 2)
             {
                 return false;
             }
-            else if (b.Position.X - b.Size.X / 2 > a.Position.X + a.Size.X / 2)
+            else if (b.Position.X - b.Scale.X / 2 > a.Position.X + a.Scale.X / 2)
             {
                 return false;
             }
@@ -169,15 +169,33 @@ namespace IceCoreEngine
             }
 
             // Checks if the lower box is too low from the box that is higher on the Y-axis
-            if (IsAHigh && a.Position.Y - a.Size.Y / 2 > b.Position.Y + b.Size.Y / 2)
+            if (IsAHigh && a.Position.Y - a.Scale.Y / 2 > b.Position.Y + b.Scale.Y / 2)
             {
                 return false;
             }
-            else if (b.Position.Y - b.Size.Y / 2 > a.Position.Y + a.Size.Y / 2)
+            else if (b.Position.Y - b.Scale.Y / 2 > a.Position.Y + a.Scale.Y / 2)
             {
                 return false;
             }
 
+            return true;
+        }
+        public static bool IsPointInSquare(Square square, Vector2 point, float squareRotation)
+        {
+            Vector2 LeftTop = new Vector2(-0.5f * square.Scale.X, 0.5f * square.Scale.Y);
+            Vector2 RightBottom = new Vector2(0.5f * square.Scale.X, -0.5f * square.Scale.Y);
+
+            Vector2 LocalSpacePoint = point - square.Position;
+            Vector2 RotatedPoint = ICVec2Math.RotateVector(LocalSpacePoint, squareRotation);
+
+            if(RotatedPoint.X < LeftTop.X || RotatedPoint.X > RightBottom.X)
+            {
+                return false;
+            }
+            if(RotatedPoint.Y > LeftTop.Y || RotatedPoint.Y < RightBottom.Y)
+            {
+                return false;
+            }
             return true;
         }
     }

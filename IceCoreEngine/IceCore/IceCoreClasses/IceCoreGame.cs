@@ -49,6 +49,12 @@ namespace IceCoreEngine
         /// Aether world
         /// </summary>
         protected World _world;
+
+        /// <summary>
+        /// Handles all UI
+        /// </summary>
+        protected UIManager _uiManager;
+
         /// <summary>
         /// Gravity
         /// </summary>
@@ -76,6 +82,7 @@ namespace IceCoreEngine
             _actorManager = new ActorManager(_objectManager);
             _world = new World(_gravity);
             _collisionSystem = new CollisionSystem(this);
+            _uiManager = new UIManager(this);
 
             base.Initialize();
         }
@@ -94,6 +101,8 @@ namespace IceCoreEngine
             _objectManager.UpdateObjects(GetDeltaTime());
 
             _graphicsManager.Update(_deltaTime);
+
+            _uiManager.Update();
 
             base.Update(gameTime);
         }
@@ -151,6 +160,11 @@ namespace IceCoreEngine
         public CollisionSystem GetCollisionSystem()
         {
             return _collisionSystem;
+        }
+
+        public UIManager GetUIManager()
+        {
+            return _uiManager;
         }
         #endregion
     }

@@ -16,12 +16,12 @@ namespace IceCoreEngine
     public struct Square
     {
         public Vector2 Position;
-        public Vector2 Size;
+        public Vector2 Scale;
 
-        public Square(Vector2 position, Vector2 size)
+        public Square(Vector2 position, Vector2 scale)
         {
             Position = position;
-            Size = size;
+            Scale = scale;
         }
     }
     public struct Transform
@@ -72,6 +72,20 @@ namespace IceCoreEngine
             Rotation = 0.0f;
             Size = new Vector2(1.0f);
         }
+
+        #region Operators
+        public static Transform operator +(Transform a, Transform b)
+        {
+            Transform Transform = new Transform();
+
+            Transform.Position = a.Position + b.Position;
+            Transform.Rotation = a.Rotation + b.Rotation;
+            Transform.Size = a.Size * b.Size;
+
+            return Transform;
+        }
+
+        #endregion
     }
     #region Input
     public struct InputAction
@@ -213,18 +227,29 @@ namespace IceCoreEngine
 
     #region Graphics
 
-    public struct DrawQueueMember
+    public struct Sprite
     {
         public Vector2 ScreenPosition;
         public Texture2D Texture;
         public Color Color = Color.White;
         public float Rotation;
         public Vector2 Origin;
-        public float Scale;
+        public Vector2 Scale;
         public SpriteEffects SpriteEffects = SpriteEffects.None;
         public float LayerDepth;
+        public bool RotatedByCamera = true;
 
-        public DrawQueueMember(Vector2 screenPosition, Texture2D texture, float rotation, Vector2 origin, float scale, float layerDepth)
+        public Sprite(Vector2 screenPosition, Texture2D texture, float rotation, Vector2 origin, float scale, float layerDepth, bool rotatedByCamera)
+        {
+            ScreenPosition = screenPosition;
+            Texture = texture;
+            Rotation = rotation;
+            Origin = origin;
+            Scale = new Vector2(scale);
+            LayerDepth = layerDepth;
+            RotatedByCamera = rotatedByCamera;
+        }
+        public Sprite(Vector2 screenPosition, Texture2D texture, float rotation, Vector2 origin, Vector2 scale, float layerDepth, bool rotatedByCamera)
         {
             ScreenPosition = screenPosition;
             Texture = texture;
@@ -232,6 +257,18 @@ namespace IceCoreEngine
             Origin = origin;
             Scale = scale;
             LayerDepth = layerDepth;
+            RotatedByCamera = rotatedByCamera;
+        }
+        public Sprite(Vector2 screenPosition, Texture2D texture, float rotation, Vector2 origin, Vector2 scale, float layerDepth, bool rotatedByCamera, Color color)
+        {
+            ScreenPosition = screenPosition;
+            Texture = texture;
+            Rotation = rotation;
+            Origin = origin;
+            Scale = scale;
+            LayerDepth = layerDepth;
+            RotatedByCamera = rotatedByCamera;
+            Color = color;
         }
     }
     #endregion

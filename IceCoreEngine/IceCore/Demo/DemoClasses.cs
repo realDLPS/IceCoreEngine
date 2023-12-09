@@ -82,9 +82,6 @@ namespace IceCoreEngine
                 CC.GetBody().LinearVelocity = Vector2.Zero;
             }
 
-            
-            
-
             base.Update(deltaTime);
         }
     }
@@ -165,5 +162,14 @@ namespace IceCoreEngine
 
             _game.GetGraphicsManager().AddWorldSpriteCentered(_owner.GetPosition(), Texture, _scale, _owner.GetRotation());
         }
+    }
+
+    public class DemoButton : ClickableWidget
+    {
+        public DemoButton()
+        {
+
+        }
+
     }
 }

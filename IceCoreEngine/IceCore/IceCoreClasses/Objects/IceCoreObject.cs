@@ -33,7 +33,7 @@ namespace IceCoreEngine
             {
                 // Having two dictionaries may be faster, no guarantees.
                 // For now this is good enough
-                if(icobject.CanUpdate())
+                if (icobject.CanUpdate())
                 {
                     icobject.Update(deltaTime);
                 }

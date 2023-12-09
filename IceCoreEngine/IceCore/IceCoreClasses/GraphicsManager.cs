@@ -22,7 +22,7 @@ namespace IceCoreEngine
         public float CameraZoom = 1.0f;
         public float CameraRotation = 0.0f;
 
-        private List<DrawQueueMember> DrawQueue = new List<DrawQueueMember>();
+        private List<Sprite> DrawQueue = new List<Sprite>();
 
         private bool DesiredMouseVisibility = true;
 
@@ -37,7 +37,7 @@ namespace IceCoreEngine
         private GameWindow Window;
         private IceCoreGame Game;
 
-        
+
 
         public GraphicsManager(IceCoreGame game, GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameWindow window)
         {
@@ -61,7 +61,7 @@ namespace IceCoreEngine
 
         public void Update(float deltaTime)
         {
-            if(Game.IsActive && (ClampMouseToGameWindow || !DesiredMouseVisibility))
+            if (Game.IsActive && (ClampMouseToGameWindow || !DesiredMouseVisibility))
             {
                 ClampMouseToWindow();
             }
@@ -75,9 +75,9 @@ namespace IceCoreEngine
                 Game.IsMouseVisible = false;
             }
 
-            if(Game.IsActive != WasInFocus)
+            if (Game.IsActive != WasInFocus)
             {
-                if(WasInFocus)
+                if (WasInFocus)
                 {
                     OnLoseFocus();
                 }
@@ -97,9 +97,16 @@ namespace IceCoreEngine
         /// </summary>
         public void Draw()
         {
-            foreach (DrawQueueMember Sprite in DrawQueue)
+            foreach (Sprite Sprite in DrawQueue)
             {
-                SpriteBatch.Draw(Sprite.Texture, Sprite.ScreenPosition, null, Sprite.Color, ICFloatMath.ConvertDegreesToRadians(Sprite.Rotation) * -1 + ICFloatMath.ConvertDegreesToRadians(CameraRotation), Sprite.Origin, Sprite.Scale, Sprite.SpriteEffects, Sprite.LayerDepth);
+                SpriteBatch.Draw(Sprite.Texture, 
+                    Sprite.ScreenPosition, 
+                    null, Sprite.Color, 
+                    ICFloatMath.ConvertDegreesToRadians(Sprite.Rotation) * -1 + (Sprite.RotatedByCamera ? ICFloatMath.ConvertDegreesToRadians(CameraRotation) : 0), 
+                    Sprite.Origin, 
+                    Sprite.Scale, 
+                    Sprite.SpriteEffects, 
+                    Sprite.LayerDepth);
             }
             DrawQueue.Clear();
         }
@@ -129,7 +136,7 @@ namespace IceCoreEngine
             Vector2 RotatedPosition = ICVec2Math.RotateVector(ScreenSizedPosition, CameraRotation);
 
             // Lastly we want to move this vector into proper position as the camera position is in the center of the screen instead of the pixel {0,0} that is in the top left corner
-            return (RotatedPosition + (ViewportSize/2));
+            return (RotatedPosition + (ViewportSize / 2));
         }
 
         /// <summary>
@@ -141,7 +148,7 @@ namespace IceCoreEngine
         {
             Vector2 ViewportSize = GetViewportSize();
 
-            if (square.Position.X + (square.Size.X / 2) * CameraZoom < 0 || square.Position.Y + (square.Size.Y / 2) * CameraZoom < 0 || square.Position.X > ViewportSize.X + (square.Size.X / 2) * CameraZoom || square.Position.Y > ViewportSize.Y + (square.Size.Y / 2) * CameraZoom)
+            if (square.Position.X + (square.Scale.X / 2) * CameraZoom < 0 || square.Position.Y + (square.Scale.Y / 2) * CameraZoom < 0 || square.Position.X > ViewportSize.X + (square.Scale.X / 2) * CameraZoom || square.Position.Y > ViewportSize.Y + (square.Scale.Y / 2) * CameraZoom)
             {
                 return false;
             }
@@ -173,6 +180,12 @@ namespace IceCoreEngine
 
             MousePosition.X = Math.Clamp(MousePosition.X, 0, (int)ViewportSize.X);
             MousePosition.Y = Math.Clamp(MousePosition.Y, (IsFullScreen() ? 0 : -30), (int)ViewportSize.Y);
+
+            if (!DesiredMouseVisibility)
+            {
+                MousePosition.X = (int)ViewportSize.X / 2;
+                MousePosition.Y = (int)ViewportSize.Y / 2;
+            }
 
             Mouse.SetPosition(MousePosition.X, MousePosition.Y);
         }
@@ -212,7 +225,21 @@ namespace IceCoreEngine
 
             if (IsSquareInView(new Square(screenspacePosition, SpriteSize)))
             {
-                DrawQueue.Add(new DrawQueueMember(screenspacePosition, texture, rotation, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, 0f));
+                DrawQueue.Add(new Sprite(screenspacePosition, texture, rotation, SpriteSize / 2, CameraZoom * scale * ScreenSizeScaling, 1f, true));
+            }
+        }
+        public void AddSprite(Sprite sprite)
+        {
+            Vector2 ViewportSize = GetViewportSize();
+            float ScreenSizeScaling = ((ViewportSize.X / 1920 >= ViewportSize.Y / 1080) ? ViewportSize.X / 1920 : ViewportSize.Y / 1080);
+
+            if (IsSquareInView(new Square(sprite.ScreenPosition, sprite.Scale)))
+            {
+                Sprite ModifiedSprite = sprite;
+
+                sprite.Scale = sprite.Scale * ScreenSizeScaling;
+
+                DrawQueue.Add(sprite);
             }
         }
         #endregion

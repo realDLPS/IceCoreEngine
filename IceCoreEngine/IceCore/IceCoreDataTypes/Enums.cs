@@ -182,4 +182,17 @@ namespace IceCoreEngine
         MouseX = 166,
         MouseY = 167
     }
+
+    public enum EAnchor
+    {
+        TopLeft,
+        Top,
+        TopRight,
+        Left,
+        Middle,
+        Right,
+        BottomLeft,
+        Bottom,
+        BottomRight
+    }
 }

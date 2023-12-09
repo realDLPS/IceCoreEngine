@@ -17,6 +17,8 @@ namespace IceCoreEngine
         // Content
         public Texture2D ball;
         public Texture2D cross;
+        public Texture2D dot;
+
 
         public Game1()
         {
@@ -30,9 +32,10 @@ namespace IceCoreEngine
 
 
             _graphicsManager.SetBorderlessWindow(true);
-            _graphicsManager.SetFullScreen(true);
-            _graphicsManager.SetMouseClamppingToWindow(true);
-            _graphicsManager.SetMouseVisibility(false);
+            _graphicsManager.SetFullScreen(false);
+            _graphicsManager.SetAllowResize(true);
+            _graphicsManager.SetMouseClamppingToWindow(false);
+            _graphicsManager.SetMouseVisibility(true);
             _graphicsManager.ApplySettings();
 
             _inputManager.AddInputAction(new InputAction(EInputType.Digital, ExitGame));
@@ -50,6 +53,9 @@ namespace IceCoreEngine
             _inputManager.QuickAddTriggerToAction(EInput.Right, -1f);
             _inputManager.QuickAddTriggerToAction(EInput.Left, 1f);
 
+            GetInputManager().AddInputAction(new InputAction(EInputType.Analog, LeftMouse));
+            GetInputManager().QuickAddTriggerToAction(EInput.MouseLeft, 1f);
+
             var temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(-250f, 0f)));
             temp.Velocity = new Vector2(100f, 0);
             temp = _actorManager.SpawnActor<TestActor>(true, new Transform(new Vector2(250f, 0f)));
@@ -61,6 +67,9 @@ namespace IceCoreEngine
             _actorManager.SpawnActor<CrossActor>(true, new Transform(new Vector2(-200, -100)));
 
             _actorManager.SpawnActor<TestPlayer>(true, new Transform(new Vector2(0f)));
+
+            var tempButton = (ClickableWidget)GetUIManager().CreateWidget<DemoButton>(null, 0);
+            tempButton._relativeTransform.Size = new Vector2(250f, 100f);
         }
 
         protected override void LoadContent()
@@ -69,6 +78,7 @@ namespace IceCoreEngine
 
             cross = Content.Load<Texture2D>("cross");
             ball = Content.Load<Texture2D>("ball");
+            dot = Content.Load<Texture2D>("dot");
             // TODO: use this to load your game content
         }
 
@@ -87,11 +97,6 @@ namespace IceCoreEngine
 
             GetGraphicsManager().BeginDraw();
 
-            //GetGraphicsManager().AddSpriteCentered(_graphicsManager.GetViewportSize() / 2, ball, 1f);
-            //GetGraphicsManager().AddWorldSpriteCentered(new Vector2(100, 250), cross, .5f);
-            //GetGraphicsManager().AddWorldSpriteCentered(new Vector2(500, 350), cross, .5f);
-            //GetGraphicsManager().AddWorldSpriteCentered(new Vector2(-200, -100), cross, .5f);
-
             GetGraphicsManager().Draw();
 
             GetGraphicsManager().EndDraw();
@@ -99,17 +104,13 @@ namespace IceCoreEngine
             base.Draw(gameTime);
         }
 
-        //private void Move()
-        //{
-        //    Vector2 Input = new Vector2(_inputManager.GetActionValue(2), _inputManager.GetActionValue(1));
-        //    if(Input.LengthSquared() > 0)
-        //    {
-        //        Input.Normalize();
-        //        Input = ICVec2Math.RotateVector(Input, _graphicsManager.CameraRotation);
-        //    }
-        //    
-        //    _graphicsManager.CameraPosition = _graphicsManager.CameraPosition + Input * 125f * GetDeltaTime();
-        //}
+        private void LeftMouse(float value)
+        {
+            if(value > 0)
+            {
+                GetUIManager().Click(Mouse.GetState().Position.ToVector2());
+            }
+        }
 
         #region Input callbacks
         protected void ExitGame(float value)
