@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using nkast.Aether.Physics2D.Dynamics;
+using GeonBit.UI;
 
 namespace IceCoreEngine
 {
@@ -65,6 +66,8 @@ namespace IceCoreEngine
         /// </summary>
         private float _deltaTime = 0.0f;
 
+        private GameTime _gameTime;
+
         protected float _timeScale = 1.0f;
 
         public IceCoreGame()
@@ -94,7 +97,8 @@ namespace IceCoreEngine
         protected override void Update(GameTime gameTime)
         {
             _deltaTime = Convert.ToSingle(gameTime.ElapsedGameTime.TotalSeconds);
-            
+            _gameTime = gameTime;
+
             _world.Step(GetDeltaTime());
 
             _inputManager.UpdateInputs();
@@ -131,6 +135,10 @@ namespace IceCoreEngine
             return _deltaTime;
         }
         #endregion
+        public GameTime GetGameTime()
+        {
+            return _gameTime;
+        }
 
         #region Subsystem getting
         public GraphicsManager GetGraphicsManager()

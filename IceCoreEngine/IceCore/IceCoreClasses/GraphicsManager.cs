@@ -61,7 +61,7 @@ namespace IceCoreEngine
 
         public void Update(float deltaTime)
         {
-            if (Game.IsActive && (ClampMouseToGameWindow || !DesiredMouseVisibility))
+            if (Game.IsActive && ClampMouseToGameWindow)
             {
                 ClampMouseToWindow();
             }

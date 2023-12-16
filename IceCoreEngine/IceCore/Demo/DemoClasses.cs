@@ -163,13 +163,4 @@ namespace IceCoreEngine
             _game.GetGraphicsManager().AddWorldSpriteCentered(_owner.GetPosition(), Texture, _scale, _owner.GetRotation());
         }
     }
-
-    public class DemoButton : ClickableWidget
-    {
-        public DemoButton()
-        {
-
-        }
-
-    }
 }
