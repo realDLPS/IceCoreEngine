@@ -1,6 +1,6 @@
 ![IceCoreLogoFullRez](https://github.com/realDLPS/IceCoreEngine/assets/68390971/a98261d1-899f-4ba0-b5c3-33d04d420797)
 
-## This read me is not ready yet.
+## This is the archived version of IceCore Engine written with C#, newer version is being created with C++ and raylib
 
 # IceCore Engine
 A simplistic 2D game engine I am creating for my own needs and as a learning exercise.
